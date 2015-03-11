@@ -2,6 +2,7 @@ package assignment1.server;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Map;
@@ -125,7 +126,7 @@ public class ClickerServer implements Runnable {
 					//Set up the data access object
 					this.qs.clickerDAO = this.qs.daoClass.getDeclaredConstructor(Integer.class).newInstance(this.qs.choices);
 					//Update the serverSocket for the main class
-					this.qs.setServerSocket(new ServerSocket(this.qs.getServerPort()));
+					this.qs.setServerSocket(new ServerSocket(this.qs.getServerPort(), 50, InetAddress.getByName("0.0.0.0")));
 					log.log(Level.INFO, "Server bound to port " +
 							this.qs.getServerSocket().getLocalPort());
 					//Listen to connections as long not marked for termination.
