@@ -38,7 +38,7 @@ public class ClickerDAOHardcoded extends ClickerDAO {
 		if (choice > choiceCount || choice < 1) {
 			throw new IllegalArgumentException("Choice must be between 1 and " + choiceCount);
 		}
-		
+		//Avoid concurrently running the incrementing of scores 
 		synchronized(this) {
 			Integer[] userScores = userStorage.get(username);
 			userScores[choice-1]++;
