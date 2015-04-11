@@ -15,7 +15,7 @@ public class Attacker {
 	
 	private Logger log;
 	
-	final int ATTACKER_COUNT = 5;
+	final int ATTACKER_COUNT = 1;
 	
 	AttackerListener listener = null;
 	
