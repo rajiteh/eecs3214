@@ -3,6 +3,7 @@ package assignment2.server;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.Random;
 
 import org.apache.logging.log4j.Logger;
 
@@ -45,10 +46,12 @@ public class ServerWorker implements Runnable {
 	public void run() {
 		Thread timer = new Thread(this.timeKeeper);
 		timer.start();
+		byte[] downloadFile = new byte[1024*10]; //10kb;
 		try {
 			while(!markForTermination) {
+				new Random().nextBytes(downloadFile);
 				ObjectOutputStream out =  new ObjectOutputStream(socket.getOutputStream());
-				out.write(Server.downloadFile);
+				out.write(downloadFile);
 				out.flush();
 			}
 		} catch (IOException e) {

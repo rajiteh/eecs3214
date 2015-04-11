@@ -1,8 +1,11 @@
 package assignment2.server;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.Random;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.math.RandomUtils;
 import org.apache.logging.log4j.LogManager;
 
 import assignment2.util.HostPort;
@@ -10,7 +13,7 @@ import assignment2.util.HostPort;
 public class Server {
 	ServerListener serverListener = null;
 	HostPort listenAddress = null;
-	static byte[] downloadFile = null;
+	
 	
 	
 	
@@ -27,8 +30,6 @@ public class Server {
 
 	public Server(HostPort listenAddress) throws IOException {
 		this.listenAddress = listenAddress;
-		if (downloadFile == null)
-			downloadFile = IOUtils.toByteArray((this.getClass().getResourceAsStream("1mb.downloadfile")));
 	}
 
 	public void startServer() throws IOException {
