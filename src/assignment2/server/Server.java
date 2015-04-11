@@ -1,11 +1,6 @@
 package assignment2.server;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.Random;
-
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.math.RandomUtils;
 import org.apache.logging.log4j.LogManager;
 
 import assignment2.util.HostPort;

@@ -45,25 +45,28 @@ public class ServerWorker implements Runnable {
 	@Override
 	public void run() {
 		Thread timer = new Thread(this.timeKeeper);
-		timer.start();
-		byte[] downloadFile = new byte[1024*10]; //10kb;
 		try {
+			ObjectOutputStream out =  new ObjectOutputStream(socket.getOutputStream());
+			byte[] downloadFile = new byte[1024*512]; //512kb;
+			Random random = new Random();
+			timer.start();
 			while(!markForTermination) {
-				new Random().nextBytes(downloadFile);
-				ObjectOutputStream out =  new ObjectOutputStream(socket.getOutputStream());
+				random.nextBytes(downloadFile);	
 				out.write(downloadFile);
 				out.flush();
 			}
 		} catch (IOException e) {
 			if (e.getMessage().equals("Socket closed")) {
-				log.debug("Connection closed.");
+				log.info("Disconnected. " + socket.getRemoteSocketAddress().toString());
 			} else {
+				log.error("Connection disrupted.");
 				e.printStackTrace();	
 			}
+		} finally {
+			timer.interrupt();
+			int count = serverListener.workerCount.decrementAndGet();
+			log.debug("Worker count " + count);	
 		}
-		timer.interrupt();
-		int count = serverListener.workerCount.decrementAndGet();
-		log.debug("Worker count " + count);
 	}
 	
 	public void closeSocket() throws IOException {

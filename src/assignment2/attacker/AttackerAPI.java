@@ -107,8 +107,9 @@ public class AttackerAPI extends API {
 	
 	private APIMessage setTarget(APIMessage request) throws Exception {
 		attackerMustBe(AttackerStatus.IDLE);
-		
-		attacker.setTargetAddress(new HostPort(request.getData()));
+		HostPort hostPort = new HostPort(request.getData());
+		log.info("Target set to " + hostPort.toString());
+		attacker.setTargetAddress(hostPort);
 		return okay();
 	}
 	

@@ -30,19 +30,17 @@ public class AttackerRunner implements Runnable {
 
 	@Override
 	public void run() {
-		log.info("Attacker initialized.");
 		Socket socket = null;
 		try {
 			long timeout = startAt.getTime() - new Date().getTime();
-			log.debug("Waiting for dispatch time.");
+			log.info("Waiting for dispatch time.");
 			if (timeout > 0) Thread.sleep(timeout); 
-			log.info("Connecting to " + target.toString());
 			socket = new Socket(target.getHost(), target.getPort());
+			log.info("Connected to " + target.toString());
 			NullOutputStream out = new NullOutputStream();
 			InputStream in = socket.getInputStream();
 			IOUtils.copy(in, out);
 		} catch (InterruptedException e) {} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
 			log.error(e.getMessage());

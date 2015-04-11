@@ -90,7 +90,7 @@ public class RemoteAttacker {
 	 */
 	public void setStatus(AttackerStatus status, String string) {
 		if (!(this.status.equals(status) || this.lastMessage.equals(string)))
-			log.info("STATUS CHANGE : " + status.toString() + " MESSAGE : " + string);
+			log.info("Status of " + this.getHostPort().toString() + " set to " + status.toString() + " (" + string + ")");
 		this.lastUpdated = new Date();
 		this.status = status;
 		this.lastMessage = string;
@@ -141,7 +141,7 @@ public class RemoteAttacker {
 		setTarget(hostPort, false);
 	}
 
-	public RemoteAttacker(HostPort hp, Logger log) throws IOException {
+	public RemoteAttacker(HostPort hp, Logger log) throws IOException, APIException, InterruptedException {
 		this.hostPort = hp;
 		this.log = log;
 		this.keepAlive = new Runnable() {
@@ -177,8 +177,11 @@ public class RemoteAttacker {
 		startKeepAlive();
 	}
 	
-	public void startKeepAlive() throws IOException {
+	public void startKeepAlive() throws IOException, APIException, InterruptedException {
 		terminate();
+		log.info("Start initial attacker clock synchronization.");
+		syncClock();
+		log.info("Attacker clock synchronized.");
 		this.thread = new Thread(this.keepAlive);
 		this.thread.start();
 	}

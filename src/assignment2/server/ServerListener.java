@@ -47,14 +47,13 @@ public class ServerListener implements Runnable {
 		try {
 			serverSocket = new ServerSocket(listenAddress.getPort(), 
 					50, InetAddress.getByName(listenAddress.getHost()));
-			log.debug("Server bound to port " + serverSocket.getLocalPort());
+			log.info("Listening to connections on " + listenAddress.toString());
 			//Listen to connections as long not marked for termination.
 			while (!markedForTermination) {
 				try {
 					Socket clientSocket  = serverSocket.accept();
-					log.info(String.format("Connected. IP:%s PORT:%d", 
-							clientSocket.getInetAddress().toString(),
-							clientSocket.getPort()));
+					log.info(String.format("Connected. "
+							+ clientSocket.getRemoteSocketAddress().toString()));
 					//Creates a new thread that executes the accepted client connection
 					int count = workerCount.incrementAndGet();
 					new Thread(new ServerWorker(clientSocket, this, LogManager.getLogger("ServerWorker"))).start();

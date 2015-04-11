@@ -15,7 +15,6 @@ public class Main {
 		Integer port = PortExtractor.extractPort(args[0]);
 		Server server = new Server(new HostPort("0.0.0.0:" + port));
 		ServerCLI cli = new ServerCLI(server);
-		cli.setPrompt("");
 		try {
 			cli.startServer("");
 		} catch (IOException e) {
