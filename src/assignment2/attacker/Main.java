@@ -13,8 +13,7 @@ public class Main {
 			throw new Exception("Port number must be supplied.");
 		}
 		
-		int defaultPort = 31019;
-		Integer port = PortExtractor.extractPort(args[0], defaultPort);
+		Integer port = PortExtractor.extractPort(args[0]);
 		Attacker attacker = new Attacker(new HostPort("0.0.0.0:" + port), LogManager.getLogger("Attacker"));
 		
 		AttackerCLI cli = new AttackerCLI(attacker);

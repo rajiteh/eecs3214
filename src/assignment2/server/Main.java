@@ -8,13 +8,12 @@ import assignment2.util.PortExtractor;
 public class Main {
 
 	public static void main(String[] args) throws Exception {
-		if (args.length < 1) {
+		if (args.length != 1) {
 			throw new Exception("Port number must be supplied.");
 		}
 		
-		int defaultPort = 31019;
-		Integer port = PortExtractor.extractPort(args[0], defaultPort);
-		Server server = new Server(new HostPort("0.0.0.0:" + defaultPort));
+		Integer port = PortExtractor.extractPort(args[0]);
+		Server server = new Server(new HostPort("0.0.0.0:" + port));
 		ServerCLI cli = new ServerCLI(server);
 		cli.setPrompt("");
 		try {

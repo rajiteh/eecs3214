@@ -1,7 +1,6 @@
 package assignment2.coordinator;
 import org.apache.logging.log4j.LogManager;
 
-import assignment2.util.PortExtractor;
 public class Main {
 
 	public static void main(String[] args) throws Exception {
