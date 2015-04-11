@@ -1,4 +1,4 @@
 #!/bin/sh
 source classpath.sh
-java -cp $CLASSPATH $1
+java -cp $CLASSPATH $@
 

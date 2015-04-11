@@ -1,2 +1,2 @@
 #!/bin/sh
-./run.sh assignment2.coordinator.Main
+./run.sh assignment2.coordinator.Main $@
