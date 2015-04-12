@@ -4,13 +4,13 @@ package assignment2.attacker;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.Date;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.output.NullOutputStream;
 import org.apache.logging.log4j.Logger; 
 
+import assignment2.util.AttackerStatus;
 import assignment2.util.HostPort;
 
 public class AttackerRunner implements Runnable {
@@ -20,7 +20,10 @@ public class AttackerRunner implements Runnable {
 	Logger log = null;
 	Boolean markedForTermination = false;
 	Date startAt = null;
-	public AttackerRunner(HostPort target, Date when, Logger logger) {
+	Attacker attacker = null;
+	
+	public AttackerRunner(HostPort target, Date when, Attacker attacker, Logger logger) {
+		this.attacker = attacker;
 		this.target = target;
 		this.log = logger;
 		this.startAt = when;
@@ -28,6 +31,11 @@ public class AttackerRunner implements Runnable {
 		this.thread.start();
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Runnable#run()
+	 * 
+	 * Sleeps till the attack time and initiates a connection to the target.
+	 */
 	@Override
 	public void run() {
 		Socket socket = null;
@@ -40,9 +48,10 @@ public class AttackerRunner implements Runnable {
 			NullOutputStream out = new NullOutputStream();
 			InputStream in = socket.getInputStream();
 			IOUtils.copy(in, out);
-		} catch (InterruptedException e) {} catch (UnknownHostException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
+		} catch (InterruptedException e) {} catch (IOException e ) {
+			AttackerStatus err = AttackerStatus.ERROR;
+			err.setMessage(e.getMessage());
+			attacker.setStatus(err);
 			log.error(e.getMessage());
 		}
 		try { if (socket != null && !socket.isClosed()) socket.close(); } catch (IOException e) { }

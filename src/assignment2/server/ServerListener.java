@@ -42,6 +42,12 @@ public class ServerListener implements Runnable {
 		this.thread.start();
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Runnable#run()
+	 * 
+	 * Listens for connections on specified port and spawns a server worker to handle the connection upon 
+	 * new connection.
+	 */
 	@Override
 	public void run() {
 		try {
@@ -56,7 +62,7 @@ public class ServerListener implements Runnable {
 							+ clientSocket.getRemoteSocketAddress().toString()));
 					//Creates a new thread that executes the accepted client connection
 					int count = workerCount.incrementAndGet();
-					new Thread(new ServerWorker(clientSocket, this, LogManager.getLogger("ServerWorker"))).start();
+					new Thread(new ServerWorker(clientSocket, this, LogManager.getLogger("ServerWorker(" + count + ")"))).start();
 					log.debug("Worker count " + count);
 				} catch (Exception e) {
 					e.printStackTrace();

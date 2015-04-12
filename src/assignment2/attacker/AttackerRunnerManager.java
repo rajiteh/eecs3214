@@ -19,6 +19,12 @@ public class AttackerRunnerManager implements Runnable {
 		this.thread.start();
 	}
 	
+	/* (non-Javadoc)
+	 * @see java.lang.Runnable#run()
+	 * 
+	 * Ensures that dead attackers are removed from the attacker pool and updates
+	 * the global attacker status if all attackers are done.
+	 */
 	@Override
 	public void run() {
 		while(true) {
@@ -29,24 +35,16 @@ public class AttackerRunnerManager implements Runnable {
 			while (iter.hasNext()) {
 			    AttackerRunner a = iter.next();
 			    if (!a.thread.isAlive()) {
-					log.debug("Removed AttackerRunner " + a.toString());
+					log.debug("Removed dead AttackerRunner " + a.target.toString());
 					iter.remove();
 				} else {
 					someRunning = true;
 				}
 			}
-			if (!someRunning) {
+			if (!someRunning && !attacker.getStatus().equals(AttackerStatus.ERROR)) {
 				attacker.setStatus(AttackerStatus.IDLE);
 			}
 		}
 	}
 
-	void suspend() {
-		suspended = true;
-	}
-	
-	synchronized void resume() {
-		suspended = false;
-		notify();
-	}
 }

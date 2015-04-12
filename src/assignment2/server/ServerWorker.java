@@ -42,6 +42,11 @@ public class ServerWorker implements Runnable {
 	}
 	
 
+	/* (non-Javadoc)
+	 * @see java.lang.Runnable#run()
+	 * 
+	 * Starts sending random data on the socket untill the remote disconnects or the specified timeout is reached.
+	 */
 	@Override
 	public void run() {
 		Thread timer = new Thread(this.timeKeeper);

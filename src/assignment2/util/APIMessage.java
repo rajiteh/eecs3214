@@ -6,6 +6,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
+import java.util.Date;
 
 public class APIMessage implements Serializable {
 
@@ -17,6 +18,37 @@ public class APIMessage implements Serializable {
 	APIMethod method;
 
 	String data;
+	
+	Long timeAtSend = null;
+	Long timeAtRetrieve = null;
+
+	/**
+	 * @return the timeAtSend
+	 */
+	public Long getTimeAtSend() {
+		return timeAtSend;
+	}
+
+	/**
+	 * @param timeAtSend the timeAtSend to set
+	 */
+	public void setTimeAtSend(Long timeAtSend) {
+		this.timeAtSend = timeAtSend;
+	}
+
+	/**
+	 * @return the timeAtRetrieve
+	 */
+	public Long getTimeAtRetrieve() {
+		return timeAtRetrieve;
+	}
+
+	/**
+	 * @param timeAtRetrieve the timeAtRetrieve to set
+	 */
+	public void setTimeAtRetrieve(Long timeAtRetrieve) {
+		this.timeAtRetrieve = timeAtRetrieve;
+	}
 
 	public APIMessage(String data, APIMethod method) {
 		this.data = data;
@@ -52,14 +84,24 @@ public class APIMessage implements Serializable {
 	}
 	
 	public String toString() {
-		
-		return "<ACTION="+ getMethod().name() + ", DATA=" + this.getData() +">";
+		String timeAtSend = "";
+		if (this.timeAtSend != null) {
+			timeAtSend = this.timeAtSend + "";
+		}
+		String timeAtRetrieve = "";
+		if (this.timeAtRetrieve != null) {
+			timeAtRetrieve = this.timeAtRetrieve + "";
+		}
+		return "<SENT=" + timeAtSend + ", RETR=" + timeAtRetrieve +  " ACTION="+ getMethod().name() + 
+				", DATA=" + this.getData() + ">";
 	}
 	
 	
 	public static APIMessage get(InputStream socketIn) throws IOException {
 		try {
-			return (APIMessage) new ObjectInputStream(socketIn).readObject();	
+			APIMessage msg = (APIMessage) new ObjectInputStream(socketIn).readObject();
+			msg.setTimeAtRetrieve(new Date().getTime());
+			return msg;
 		} catch (ClassNotFoundException e) {
 			throw new IOException("Malformed response");
 		}
@@ -68,6 +110,7 @@ public class APIMessage implements Serializable {
 	
 	public static  void send(APIMessage request, OutputStream socketOut) throws IOException {
 		ObjectOutputStream out = new ObjectOutputStream(socketOut);
+		request.setTimeAtSend(new Date().getTime());
 		out.writeObject(request);
 		out.flush();
 	}

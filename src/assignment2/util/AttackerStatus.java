@@ -8,6 +8,21 @@ public class AttackerStatus {
 	public static final AttackerStatus ATTACKING = new AttackerStatus("ATTACKING");
 	
 	private String status;
+	private String message;
+	/**
+	 * @return the message
+	 */
+	public String getMessage() {
+		return message;
+	}
+
+	/**
+	 * @param message the message to set
+	 */
+	public void setMessage(String message) {
+		this.message = message.replace(",", "");
+	}
+
 	/**
 	 * @return the status
 	 */
@@ -31,7 +46,12 @@ public class AttackerStatus {
 	}
 	
 	public AttackerStatus(String status) {
+		this(status, status);
+	}
+	
+	public AttackerStatus(String status, String message) {
 		this.status = status;
+		setMessage(message);
 	}
 	
 

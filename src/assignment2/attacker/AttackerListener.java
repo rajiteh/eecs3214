@@ -27,13 +27,18 @@ public class AttackerListener implements Runnable {
 	}
 	
 
+	/* (non-Javadoc)
+	 * @see java.lang.Runnable#run()
+	 * 
+	 * Listen for an incoming connection from a coordinator and starts a socket connection.
+	 */
 	public void run() {
 		
 		log.debug("Starting Attacker Listener.");
 		try {
 			serverSocket = new ServerSocket(listenAddress.getPort(), 
 					50, InetAddress.getByName(listenAddress.getHost()));
-			log.debug("Server bound to port " + serverSocket.getLocalPort());
+			log.info("Listener bound to port " + serverSocket.getLocalPort());
 			//Listen to connections as long not marked for termination.
 			while (!markedForTermination) {
 				try {
@@ -52,10 +57,8 @@ public class AttackerListener implements Runnable {
 					log.warn(e.toString());
 					break;
 				}
-				//Resume listening to new connections.
 			}
 			attacker.stopAttack();
-			log.info("Shutting down server.");
 			if (serverSocket != null &&
 					!serverSocket.isClosed()) {
 				serverSocket.close();
@@ -64,7 +67,7 @@ public class AttackerListener implements Runnable {
 		} catch (IOException | IllegalArgumentException | SecurityException e1) {
 			log.fatal(e1.toString());
 		}
-		//Server died. Clean up.
+		log.info("Listener stopeed.");
 		markedForTermination = false;
 	}
 	

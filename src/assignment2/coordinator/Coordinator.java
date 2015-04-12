@@ -15,13 +15,27 @@ import assignment2.util.HostPort;
 
 public class Coordinator {
 
+	/**
+	 * List of attackers configured by the current coordinator.
+	 */
 	List<RemoteAttacker> attackers = new ArrayList<RemoteAttacker>();
+	
+	/**
+	 * Logger for current coordinator. 
+	 */
 	Logger log = null;
+	
+	
 	public Coordinator(Logger log) {
 		this.log = log;
-		// TODO Auto-generated constructor stub
 	}
 	
+	/**
+	 * @param hostPort
+	 * @throws Exception
+	 * 
+	 * Add a new attacker to the coordinator. Checks if the attacker already exists.
+	 */
 	public void addAttacker(HostPort hostPort) throws Exception {
 		for(RemoteAttacker attacker : attackers) {
 			if (attacker.getHostPort().equals(hostPort)) {
@@ -32,10 +46,15 @@ public class Coordinator {
 		RemoteAttacker attacker = new RemoteAttacker(hostPort, LogManager.getLogger("Attacker(" + attackers.size() + ")"));
 		log.info("Adding attacker " + hostPort.toString());
 		attackers.add(attacker);
-			
-		
 	}
 	
+	
+	/**
+	 * @param hostPort
+	 * @throws Exception
+	 * 
+	 * Shutdown the connection and remove the attacker from current coordinator.
+	 */
 	public void removeAttacker(HostPort hostPort) throws Exception {
 		for(RemoteAttacker attacker : attackers) {
 			if (attacker.getHostPort().equals(hostPort)) {
@@ -48,6 +67,9 @@ public class Coordinator {
 		throw new Exception("Attacker does not exist.");
 	}
 
+	/**
+	 * Prints a summary of the attackers connected.
+	 */
 	public void printAttackerStatus() {
 		String[] columnNames = {                                       
                 "Host",
@@ -76,7 +98,11 @@ public class Coordinator {
 
 	public void updateTargetAll(HostPort target) throws IOException {
 		ListIterator<RemoteAttacker> iter = attackers.listIterator();
-		while(iter.hasNext()) iter.next().setTarget(target);
+		while(iter.hasNext()) setTarget(iter.next(), target);
+	}
+	
+	public void setTarget(RemoteAttacker attacker ,HostPort target) throws IOException {
+		attacker.setTarget(target);
 	}
 	
 	public void initiateAttackAll(Date when) throws Exception {

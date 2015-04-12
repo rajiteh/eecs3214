@@ -12,14 +12,11 @@ public class Main {
 		if (args.length != 1) {
 			throw new Exception("Port number must be supplied.");
 		}
-		
 		Integer port = PortExtractor.extractPort(args[0]);
-		Attacker attacker = new Attacker(new HostPort("0.0.0.0:" + port), LogManager.getLogger("Attacker"));
 		
+		Attacker attacker = new Attacker(new HostPort("0.0.0.0:" + port), LogManager.getLogger("Attacker"));
 		AttackerCLI cli = new AttackerCLI(attacker);
-		cli.setPrompt("");
 		cli.startListening("");
-		cli.status("");
 		cli.startREPL();
 	}
 
