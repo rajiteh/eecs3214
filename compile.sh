@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 source classpath.sh
 rm -rf bin/
 mkdir bin/

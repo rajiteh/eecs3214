@@ -257,10 +257,10 @@ public class AttackerAPI extends API {
 		double[] latencyArray = latencies.getValues();
 		double median = (new Median().evaluate(latencyArray));
 		double stdDev = latencies.getStandardDeviation();
+		List<Double> validLatencies = new ArrayList<Double>();
 		
 		//Filter out values that are outside one standard deviation from the
 		//median latency
-		List<Double> validLatencies = new ArrayList<Double>();
 		for(int i = 0; i < latencyArray.length; i++ ) {
 			if (Math.abs(latencyArray[i] - median) <= stdDev) {
 				validLatencies.add(latencyArray[i]);
@@ -276,6 +276,7 @@ public class AttackerAPI extends API {
 		
 		log.info("SYNC : MEDIAN=" + median + "ms STDDEV=" + stdDev + "ms LATENCY=" +
 				latency + "ms OFFSET=" + clockOffset + "ms");
+		log.info("SYNC : CLIENT=" + clientTime + ", SERVER=" + serverTime);
 		
 		return okay(latency + "," + clockOffset);
 	}
@@ -303,7 +304,7 @@ public class AttackerAPI extends API {
 	 */
 	private long getLocalTime(long serverTime) {
 		log.debug("Time from server is " + new Date(serverTime) + " Offset time is " + new Date(serverTime + clockOffset));
-		return serverTime + clockOffset;
+		return clockOffset - serverTime;
 	}
 	
 	private void attackerMustBe(AttackerStatus as) throws Exception {

@@ -39,7 +39,7 @@ public class RemoteAttacker {
 	/**
 	 * Number of seconds to wait before each synchronization. 
 	 */
-	private static final int CLOCK_SYNC_INTERVAL = 60;
+	private static final int CLOCK_SYNC_INTERVAL = 15;
 	
 
 	/**
