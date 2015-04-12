@@ -276,7 +276,6 @@ public class AttackerAPI extends API {
 		
 		log.info("SYNC : MEDIAN=" + median + "ms STDDEV=" + stdDev + "ms LATENCY=" +
 				latency + "ms OFFSET=" + clockOffset + "ms");
-		log.info("SYNC : CLIENT=" + clientTime + ", SERVER=" + serverTime);
 		
 		return okay(latency + "," + clockOffset);
 	}
@@ -304,7 +303,7 @@ public class AttackerAPI extends API {
 	 */
 	private long getLocalTime(long serverTime) {
 		log.debug("Time from server is " + new Date(serverTime) + " Offset time is " + new Date(serverTime + clockOffset));
-		return clockOffset - serverTime;
+		return clockOffset + serverTime;
 	}
 	
 	private void attackerMustBe(AttackerStatus as) throws Exception {

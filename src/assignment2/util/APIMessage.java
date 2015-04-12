@@ -19,8 +19,8 @@ public class APIMessage implements Serializable {
 
 	String data;
 	
-	Long timeAtSend = null;
-	Long timeAtRetrieve = null;
+	Long timeAtSend;
+	Long timeAtRetrieve;
 
 	/**
 	 * @return the timeAtSend
